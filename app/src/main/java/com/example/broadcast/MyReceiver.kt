@@ -19,6 +19,17 @@ class MyReceiver : BroadcastReceiver() {
 
                 Toast.makeText(p0, "Airplane mode chandeg. TurnedOn: $turnedOn", Toast.LENGTH_SHORT).show()
             }
+
+            ACTION_CLICKED -> {
+                val countOfClicks = p1.getIntExtra(COUNT_OF_CLICKS, 0)
+                Toast.makeText(p0, "$ACTION_CLICKED: $countOfClicks", Toast.LENGTH_SHORT).show()
+            }
         }
+    }
+
+    companion object {
+
+        const val ACTION_CLICKED = "clicked"
+        const val COUNT_OF_CLICKS = "clicks"
     }
 }
