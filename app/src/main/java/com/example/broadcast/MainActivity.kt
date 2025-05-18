@@ -11,11 +11,15 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var progressBar: ProgressBar
 
+    private val localBroadcastManager by lazy {
+        LocalBroadcastManager.getInstance(this)
+    }
 
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(p0: Context?, p1: Intent?) {
@@ -36,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.button).setOnClickListener {
             val intent = Intent(MyReceiver.ACTION_CLICKED).putExtra(MyReceiver.COUNT_OF_CLICKS, countOfClicks++)
-            sendBroadcast(intent)
+            localBroadcastManager.sendBroadcast(intent)
         }
 
         val intentFilter = IntentFilter().apply {
@@ -46,7 +50,7 @@ class MainActivity : AppCompatActivity() {
             addAction("loaded")
         }
 
-        registerReceiver(receiver, intentFilter)
+        localBroadcastManager.registerReceiver(receiver, intentFilter)
 
         val serviceIntent = Intent(this, MyService::class.java)
         startService(serviceIntent)
@@ -55,6 +59,6 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
 
-        unregisterReceiver(receiver)
+        localBroadcastManager.unregisterReceiver(receiver)
     }
 }
