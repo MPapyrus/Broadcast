@@ -10,6 +10,10 @@ class MyReceiver : BroadcastReceiver() {
     override fun onReceive(p0: Context?, p1: Intent?) {
 
         when (p1?.action) {
+            "loaded" -> {
+                val progress = p1.getIntExtra("percent", 0)
+                Toast.makeText(p0, "Progress: $progress", Toast.LENGTH_SHORT).show()
+            }
             Intent.ACTION_BATTERY_LOW -> {
                 Toast.makeText(p0, "Battery Low", Toast.LENGTH_SHORT).show()
             }
